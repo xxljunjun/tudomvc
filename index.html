@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template • TodoMVC</title>
+		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+		<link rel="stylesheet" href="css/app.css">
+		<style>
+			[v-cloak]{
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 被实例化管理的div.todoapp -->
+		<section class="todoapp">
+			<header class="header">
+				<h1>todos</h1>
+				<!-- 输入任务的容器 -->
+				<input class="new-todo" placeholder="What needs to be done?" autofocus v-model="newTask" @keyup.enter="add">
+			</header>
+			<section class="main">
+				<input id="toggle-all" class="toggle-all" type="checkbox">
+				<label for="toggle-all" @click="toggleAll">Mark all as complete</label>
+				<!-- 存放任务的容器 -->
+				<ul class="todo-list" v-cloak>
+					<li v-for="task in tasks" :class="{completed:task.completed,editing:isEditing==task.id}" 
+					v-if="show(task.completed)"
+					>
+						<div class="view">
+							<input class="toggle" type="checkbox" v-model="task.completed">
+							<label @dblclick="isEditing=task.id">{{task.title}}</label>
+							<button class="destroy" @click="remove(task.id)"></button>
+						</div>
+						<input class="edit" v-model="task.title" @keyup.enter="isEditing=-1" @blur="isEditing=-1">
+					</li>
+				</ul>
+			</section>
+			<!-- 底部操作容器 -->
+			<footer class="footer" v-if="tasks.length" v-cloak>
+				<span class="todo-count"><strong  v-text="activeNum"></strong> item left</span>
+				<ul class="filters">
+					<li>
+						<a :class="{selected:flag===''}" href="#/">All</a>
+					</li>
+					<li>
+						<a href="#/active" :class="{selected:flag.completed===false}">Active</a>
+					</li>
+					<li>
+						<a href="#/completed" :class="{selected:flag.completed===true}">Completed</a>
+					</li>
+				</ul>
+				<button class="clear-completed" @click="deleteWan" v-if="isShow">Clear completed</button>
+			</footer>
+		</section>
+		<script src="node_modules/todomvc-common/base.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script><!-- 引入vuejs -->
+		<script src="js/app.js"></script>
+	</body>
+</html>
